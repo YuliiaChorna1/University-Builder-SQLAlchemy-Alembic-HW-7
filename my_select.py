@@ -98,15 +98,12 @@ def select_8(teacher_name):
 
 def select_9(student_name):  
     with DBSession() as session:
-        results = session.query(Student.name.label("student_name"), Subject.name.label("subject"))\
-            .select_from(Student)\
-                .distinct(Subject.name)\
-                    .join(Grade, isouter=True)\
-                        .join(Subject, isouter=True).filter(Student.name == student_name).all()
+        student = session.query(Student).filter(Student.name == student_name).first()
         
         print("Query 9 -------------------------------------")
-        for subject in results:
-            print(f"student_name: {subject.student_name} | subject: {subject.subject}")
+        for subject in student.student_subjects:
+            print(f"student_name: {student.name} | subject: {subject.name}")
+        
 
 def select_10(student_name, teacher_name):  
     with DBSession() as session:
